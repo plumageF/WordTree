@@ -1,0 +1,12 @@
+{
+  "name": "wordtree-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local-first English vocabulary learning demo with cards, timed spelling, word-family trees, and practice records.",
+  "scripts": {
+    "serve": "python3 -m http.server 8766 --bind 127.0.0.1",
+    "validate": "node scripts/validate-data.js",
+    "import:vocabulary": "node scripts/import-kylebing-vocabulary.js",
+    "generate:families": "node scripts/generate-imported-families.js"
+  }
+}

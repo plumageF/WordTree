@@ -1,0 +1,11 @@
+.DS_Store
+node_modules/
+release/
+*.log
+
+# Source archives are not needed for running the app.
+vendor/english-vocabulary.zip
+
+# Local temporary files
+*.tmp
+*.bak

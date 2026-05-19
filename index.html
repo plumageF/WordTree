@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WordTree Demo</title>
+    <link rel="stylesheet" href="styles.css?v=20260519-quizlayout" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="side">
+        <div class="brand">
+          <div class="logo">W</div>
+          <div>
+            <strong>WordTree</strong>
+            <span>结构化背单词</span>
+          </div>
+        </div>
+        <button class="sideToggle" id="sideToggle" type="button" aria-label="收起侧边栏">‹</button>
+        <button class="nav active" data-view="cards">认词卡片</button>
+        <button class="nav" data-view="quiz">限时输入</button>
+        <button class="nav" data-view="tree">词族树谱</button>
+        <button class="nav" data-view="records">练习记录</button>
+      </aside>
+
+      <main class="main">
+        <header class="head">
+          <div>
+            <h1 id="title">认词卡片</h1>
+            <p id="subtitle">看英语或汉语，翻面后标记背过或没背过。</p>
+          </div>
+          <div class="headTools">
+            <button class="themeToggle" id="themeToggle" type="button">深色</button>
+            <button class="themeToggle" id="soundToggle" type="button">音效开</button>
+            <button class="themeToggle" id="speechToggle" type="button">读音开</button>
+            <button class="themeToggle" id="repeatSpeech" type="button">重读</button>
+            <div class="stats" id="stats"></div>
+          </div>
+        </header>
+
+        <section class="view active" id="cards">
+          <div class="toolbar learningToolbar">
+            <div class="toolbarLead">
+              <div class="seg">
+                <button class="on" data-card-dir="en">英语 → 汉语</button>
+                <button data-card-dir="cn">汉语 → 英语</button>
+              </div>
+            </div>
+            <div class="controlGroup cardControls">
+              <label class="fieldShell wide" for="wordbookSelect">
+                <span>词书</span>
+                <select id="wordbookSelect" aria-label="选择词书"></select>
+              </label>
+              <label class="fieldShell" for="cardPickMode">
+                <span>选词</span>
+                <select id="cardPickMode" aria-label="认词选词模式">
+                  <option value="smart">智能新学</option>
+                  <option value="new">只学未背</option>
+                  <option value="review">复习已学</option>
+                  <option value="order">顺序选词</option>
+                  <option value="custom">自选词</option>
+                </select>
+              </label>
+              <label class="fieldShell small" for="cardPickCount">
+                <span>数量</span>
+                <input id="cardPickCount" type="number" min="1" max="999" placeholder="认词数量" aria-label="认词数量" />
+              </label>
+            </div>
+            <div class="actionGroup">
+              <button class="primary compactAction" id="buildCardSession" type="button">生成本组</button>
+              <button class="plain compactAction" id="openCardPicker" type="button">自选词</button>
+              <button class="plain compactAction" id="resetStats">重置统计</button>
+            </div>
+          </div>
+          <div class="selectionPanel hide" id="cardPicker">
+            <div class="selectionHead">
+              <div>
+                <div class="kicker">Pick Words</div>
+                <strong>认词自选词</strong>
+              </div>
+              <button class="plain" id="closeCardPicker" type="button">收起</button>
+            </div>
+            <input id="cardPickerSearch" placeholder="搜索当前词书中的单词或释义" />
+            <div class="selectionSummary" id="cardPickerSummary"></div>
+            <div class="wordPickList" id="cardPickList"></div>
+            <div class="actions">
+              <button class="primary" id="applyCardSelection" type="button">应用自选词</button>
+            </div>
+          </div>
+          <div class="grid">
+            <div class="panel">
+              <div class="kicker">Recognition</div>
+              <button class="card" id="card"></button>
+              <div class="actions hide" id="cardActions">
+                <button class="ok" id="known">背过</button>
+                <button class="bad" id="unknown">没背过</button>
+              </div>
+            </div>
+            <div class="panel answer" id="cardAnswer">点击左侧卡片查看答案</div>
+          </div>
+        </section>
+
+        <section class="view" id="quiz">
+          <div class="toolbar learningToolbar">
+            <div class="toolbarLead">
+              <div class="modeTitle">看汉语拼英语</div>
+            </div>
+            <div class="controlGroup">
+              <label class="fieldShell wide" for="quizWordbookSelect">
+                <span>词书</span>
+                <select id="quizWordbookSelect" aria-label="选择测试词书"></select>
+              </label>
+              <label class="fieldShell" for="quizPickMode">
+                <span>策略</span>
+                <select id="quizPickMode" aria-label="测试选词模式">
+                  <option value="smart">智能复习</option>
+                  <option value="review">只练复习词</option>
+                  <option value="new">挑战新词</option>
+                  <option value="order">顺序选词</option>
+                  <option value="custom">自选词</option>
+                </select>
+              </label>
+              <label class="fieldShell small" for="challengeSize">
+                <span>本组</span>
+                <select id="challengeSize" aria-label="选择本组词数">
+                  <option value="5">本组 5 词</option>
+                  <option value="10" selected>本组 10 词</option>
+                  <option value="20">本组 20 词</option>
+                  <option value="30">本组 30 词</option>
+                  <option value="50">本组 50 词</option>
+                  <option value="all">全部词</option>
+                </select>
+              </label>
+              <label class="fieldShell small" for="customChallengeSize">
+                <span>自定义</span>
+                <input id="customChallengeSize" type="number" min="1" max="999" placeholder="词数" aria-label="自定义练习词数" />
+              </label>
+            </div>
+            <div class="actionGroup">
+              <button class="primary compactAction" id="startChallenge" type="button">开始闯关</button>
+              <button class="plain compactAction" id="openQuizPicker" type="button">自选词</button>
+              <button class="plain compactAction" id="nextQuiz">下一题</button>
+            </div>
+          </div>
+          <div class="selectionPanel hide" id="quizPicker">
+            <div class="selectionHead">
+              <div>
+                <div class="kicker">Pick Words</div>
+                <strong>测试自选词</strong>
+              </div>
+              <button class="plain" id="closeQuizPicker" type="button">收起</button>
+            </div>
+            <input id="quizPickerSearch" placeholder="搜索当前词书中的单词或释义" />
+            <div class="selectionSummary" id="quizPickerSummary"></div>
+            <div class="wordPickList" id="quizPickList"></div>
+            <div class="actions">
+              <button class="primary" id="applyQuizSelection" type="button">应用自选词</button>
+            </div>
+          </div>
+          <div class="quizGrid">
+            <div class="panel quizbox">
+              <div class="timer">
+                <span>动态限时</span>
+                <strong id="time">10</strong>
+              </div>
+              <div class="bar"><i id="bar"></i></div>
+              <div class="prompt" id="quizPrompt"></div>
+              <form id="quizForm">
+                <label for="quizInput">你的答案</label>
+                <input id="quizInput" autocomplete="off" />
+                <div class="quizFormActions">
+                  <button class="primary">提交答案</button>
+                  <div class="inlineChallengeActions">
+                    <button class="plain" id="pauseChallenge" type="button">暂停</button>
+                    <button class="plain dangerAction" id="finishChallenge" type="button">提前结束</button>
+                  </div>
+                </div>
+              </form>
+              <div class="feedback hide" id="quizFeedback"></div>
+            </div>
+            <aside class="panel recordPanel">
+              <div class="recordHead">
+                <div>
+                  <div class="kicker">Record</div>
+                  <h2>背诵记录</h2>
+                </div>
+                <span id="sessionLabel"></span>
+              </div>
+              <div class="comboPill" id="comboPill">T1 · 连击 0</div>
+              <div class="recordStats" id="recordStats"></div>
+              <div class="streakMeter" id="streakMeter"></div>
+              <div class="chartWrap">
+                <svg id="progressChart" viewBox="0 0 420 190" role="img" aria-label="闯关条形图"></svg>
+              </div>
+              <div class="recordTableWrap">
+                <table class="recordTable">
+                  <thead>
+                    <tr>
+                      <th>序号</th>
+                      <th>单词</th>
+                      <th>结果</th>
+                      <th>用时</th>
+                    </tr>
+                  </thead>
+                  <tbody id="recordRows"></tbody>
+                </table>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="view" id="tree">
+          <div class="toolbar">
+            <div class="seg">
+              <button class="on" data-tree-mode="browse">查阅模式</button>
+              <button data-tree-mode="exam">考试模式</button>
+            </div>
+          </div>
+
+          <div id="browseMode" class="treeMode active">
+            <div class="grid treegrid">
+              <div class="panel">
+                <div class="kicker">Lookup</div>
+                <label for="treeSearch">输入树谱中的任意单词</label>
+                <input id="treeSearch" value="reaction" />
+                <div class="familyDirectory" id="familyDirectory"></div>
+                <div class="chips" id="chips"></div>
+                <p id="treeNote"></p>
+              </div>
+              <div class="panel">
+                <div class="kicker" id="familyName">Family Tree</div>
+                <div id="treeView"></div>
+              </div>
+            </div>
+          </div>
+
+          <div id="examMode" class="treeMode">
+            <div class="panel">
+              <div class="examHead">
+                <div>
+                  <div class="kicker">Exam</div>
+                  <h2>根据基础词补全词族树</h2>
+                </div>
+                <select id="familySelect"></select>
+              </div>
+              <form id="examForm">
+                <div id="examTree"></div>
+                <div class="actions">
+                  <button class="primary">提交检查</button>
+                  <button class="plain" type="button" id="resetExam">重新填写</button>
+                </div>
+              </form>
+              <div class="feedback hide" id="examResult"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" id="records">
+          <div class="toolbar">
+            <div class="modeTitle">本地练习记录</div>
+            <div class="toolActions">
+              <input id="recordSearch" placeholder="搜索词书、模块或错误单词" aria-label="搜索练习记录" />
+              <button class="plain" id="clearReports" type="button">清空记录</button>
+            </div>
+          </div>
+          <div class="panel memoryLookupPanel">
+            <div class="recordHead">
+              <div>
+                <div class="kicker">Wordbook Memory</div>
+                <h2>词书记忆查询</h2>
+              </div>
+              <span id="memoryLookupCount"></span>
+            </div>
+            <div class="memoryFilters">
+              <select id="recordWordbookSelect" aria-label="选择查询词书"></select>
+              <select id="memoryStatusSelect" aria-label="选择记忆状态">
+                <option value="all">全部状态</option>
+                <option value="unlearned">未背过</option>
+                <option value="learned">已背过</option>
+                <option value="due">待复习</option>
+                <option value="weak">需加强</option>
+                <option value="seen">已认词</option>
+              </select>
+              <input id="memorySearch" placeholder="搜索单词或释义" aria-label="搜索词书单词" />
+            </div>
+            <div class="wordMemoryList" id="wordMemoryList"></div>
+          </div>
+          <div class="grid">
+            <div class="panel">
+              <div class="recordHead">
+                <div>
+                  <div class="kicker">Reports</div>
+                  <h2>记录列表</h2>
+                </div>
+                <span id="reportCount"></span>
+              </div>
+              <div class="recordTableWrap reportTableWrap">
+                <table class="recordTable">
+                  <thead>
+                    <tr>
+                      <th>时间</th>
+                      <th>模块</th>
+                      <th>词书</th>
+                      <th>数量</th>
+                      <th>正确</th>
+                      <th>错误</th>
+                    </tr>
+                  </thead>
+                  <tbody id="reportRows"></tbody>
+                </table>
+              </div>
+            </div>
+            <div class="panel answer">
+              <div class="kicker">Wrong Words</div>
+              <div id="reportDetail">选择或搜索记录后，错误单词会显示在这里。</div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <div class="rewardToast" id="rewardToast" aria-live="polite">
+      <div class="rewardTitle" id="rewardTitle">连对 3</div>
+      <div class="rewardText" id="rewardText">节奏很好，继续保持</div>
+    </div>
+    <script src="data/wordbooks.js"></script>
+    <script src="data/words.js"></script>
+    <script src="data/families.js"></script>
+    <script src="data/imported-vocabulary.js"></script>
+    <script src="app.js?v=20260519-quizlayout"></script>
+  </body>
+</html>
