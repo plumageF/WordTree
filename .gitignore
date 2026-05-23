@@ -1,6 +1,8 @@
 .DS_Store
 node_modules/
 release/
+dist/
+build/icon.iconset/
 *.log
 
 # Source archives are not needed for running the app.

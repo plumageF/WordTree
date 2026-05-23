@@ -24,6 +24,26 @@ python3 -m http.server 8766 --bind 127.0.0.1
 http://127.0.0.1:8766/
 ```
 
+## 本地应用安装包
+
+项目已支持 Electron 桌面应用打包。普通用户可以从 GitHub Release 下载 `.pkg`、`.dmg` 或 `.exe` 安装包，本地安装后直接运行，不需要自己启动服务器。
+
+开发者打包前先安装依赖：
+
+```bash
+npm install
+```
+
+macOS 生成安装向导：
+
+```bash
+chmod +x scripts/create-mac-icon.sh
+npm run desktop:icon
+npm run desktop:dist:mac
+```
+
+更多发布步骤见 `docs/DESKTOP_RELEASE.md`。
+
 ## 校验数据
 
 ```bash

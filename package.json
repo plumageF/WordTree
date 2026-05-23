@@ -1,12 +1,101 @@
 {
-  "name": "wordtree-demo",
+  "name": "wordtree",
   "version": "1.0.0",
   "private": true,
+  "main": "electron/main.js",
+  "author": "WordTree",
   "description": "Local-first English vocabulary learning demo with cards, timed spelling, word-family trees, and practice records.",
   "scripts": {
     "serve": "python3 -m http.server 8766 --bind 127.0.0.1",
+    "desktop:start": "electron .",
+    "desktop:icon": "node scripts/create-mac-icon.mjs",
+    "desktop:pack": "electron-builder --dir",
+    "desktop:dist": "electron-builder",
+    "desktop:dist:mac": "electron-builder --mac pkg",
+    "desktop:dist:mac:all": "electron-builder --mac pkg dmg",
+    "desktop:dist:win": "electron-builder --win nsis",
     "validate": "node scripts/validate-data.js",
     "import:vocabulary": "node scripts/import-kylebing-vocabulary.js",
     "generate:families": "node scripts/generate-imported-families.js"
+  },
+  "devDependencies": {
+    "electron": "latest",
+    "electron-builder": "latest"
+  },
+  "build": {
+    "appId": "com.wordtree.vocabulary",
+    "productName": "WordTree",
+    "copyright": "Copyright © 2026 WordTree",
+    "asar": true,
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "index.html",
+      "styles.css",
+      "app.js",
+      "assets/**/*",
+      "data/**/*",
+      "electron/**/*",
+      "docs/**/*",
+      "README.md",
+      "DATA_GUIDE.md"
+    ],
+    "mac": {
+      "category": "public.app-category.education",
+      "icon": "build/icon.icns",
+      "identity": null,
+      "target": [
+        {
+          "target": "pkg",
+          "arch": [
+            "arm64",
+            "x64"
+          ]
+        },
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64",
+            "x64"
+          ]
+        }
+      ]
+    },
+    "pkg": {
+      "installLocation": "/Applications"
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "win": {
+      "icon": "assets/wordtree-logo.png",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "WordTree"
+    }
   }
 }

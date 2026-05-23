@@ -89,7 +89,54 @@ body.side-collapsed .app { grid-template-columns: 74px 1fr; }
 
 .brand { display: flex; gap: 12px; align-items: center; margin-bottom: 30px; }
 .brand span { display: block; margin-top: 3px; color: var(--muted); font-size: 13px; }
-.logo { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 8px; color: #fff; background: var(--green); font-weight: 850; }
+.logoMark {
+  position: relative;
+  display: grid;
+  width: 52px;
+  height: 52px;
+  flex: 0 0 52px;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--green) 34%, var(--line));
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at 50% 20%, color-mix(in srgb, var(--green) 24%, transparent), transparent 62%),
+    color-mix(in srgb, var(--card) 82%, var(--green-soft));
+  box-shadow: 0 10px 26px var(--combo-aura);
+}
+.logoMark img {
+  position: relative;
+  z-index: 2;
+  display: none;
+  width: 88%;
+  height: 88%;
+  object-fit: contain;
+}
+.logoMark img[src=""],
+.logoMark img:not([src]),
+.logoMark img[hidden] {
+  display: none;
+}
+.logoMark span {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  color: #fff;
+  background: var(--green);
+  font-size: 22px;
+  font-weight: 850;
+}
+.logoMark img + span {
+  opacity: 1;
+}
+body.side-collapsed .logoMark {
+  width: 48px;
+  height: 48px;
+  flex-basis: 48px;
+}
 .sideToggle {
   position: absolute;
   top: 28px;
