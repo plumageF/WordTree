@@ -14,11 +14,17 @@
     "desktop:dist:mac": "electron-builder --mac pkg",
     "desktop:dist:mac:all": "electron-builder --mac pkg dmg",
     "desktop:dist:win": "electron-builder --win nsis",
+    "android:prepare": "node scripts/prepare-capacitor-web.mjs",
+    "android:icon": "node scripts/create-android-icons.mjs",
+    "android:sync": "npm run android:prepare && cap sync android",
+    "android:open": "npm run android:sync && cap open android",
+    "android:run": "npm run android:sync && cap run android",
     "validate": "node scripts/validate-data.js",
     "import:vocabulary": "node scripts/import-kylebing-vocabulary.js",
     "generate:families": "node scripts/generate-imported-families.js"
   },
   "devDependencies": {
+    "@capacitor/cli": "^8.3.4",
     "electron": "latest",
     "electron-builder": "latest"
   },
@@ -97,5 +103,9 @@
       "createStartMenuShortcut": true,
       "shortcutName": "WordTree"
     }
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.3.4",
+    "@capacitor/core": "^8.3.4"
   }
 }

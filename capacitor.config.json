@@ -1,0 +1,11 @@
+{
+  "appId": "com.wordtree.vocabulary",
+  "appName": "WordTree",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "android": {
+    "backgroundColor": "#07150f",
+    "allowMixedContent": false,
+    "captureInput": true
+  }
+}

@@ -1085,8 +1085,26 @@ input:focus, select:focus { border-color: var(--green); box-shadow: 0 0 0 3px co
 }
 
 @media (max-width: 560px) {
-  .main { padding: 14px; }
+  body { overflow-x: hidden; }
+  .main {
+    padding:
+      max(14px, env(safe-area-inset-top))
+      max(14px, env(safe-area-inset-right))
+      max(18px, env(safe-area-inset-bottom))
+      max(14px, env(safe-area-inset-left));
+  }
+  .side {
+    overflow-x: auto;
+    grid-template-columns: repeat(4, minmax(86px, 1fr));
+    scrollbar-width: none;
+  }
+  .side::-webkit-scrollbar { display: none; }
+  .nav { min-height: 42px; padding: 9px 10px; white-space: nowrap; }
   h1 { font-size: 24px; }
+  .head { gap: 12px; margin-bottom: 16px; }
+  .headTools { gap: 8px; }
+  .themeToggle { min-height: 38px; }
+  .toolbar { gap: 10px; }
   .stats { grid-template-columns: repeat(2, 1fr); }
   #wordbookSelect, #quizWordbookSelect, #challengeSize, #customChallengeSize, #cardPickMode, #quizPickMode, #cardPickCount, #recordSearch { width: 100%; }
   .recordStats { grid-template-columns: repeat(2, 1fr); }
